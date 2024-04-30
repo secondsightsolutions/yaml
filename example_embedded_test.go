@@ -44,7 +44,7 @@ b: a string from struct B
 func ExampleUnmarshal_embedded() {
 	var b StructB
 
-	err := yaml.Unmarshal([]byte(data), &b)
+	_, err := yaml.Unmarshal([]byte(data), &b)
 	if err != nil {
 		log.Fatalf("cannot unmarshal data: %v", err)
 	}

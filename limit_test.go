@@ -48,7 +48,7 @@ func (s *S) TestLimits(c *C) {
 	}
 	for _, tc := range limitTests {
 		var v interface{}
-		err := yaml.Unmarshal(tc.data, &v)
+		_, err := yaml.Unmarshal(tc.data, &v)
 		if len(tc.error) > 0 {
 			c.Assert(err, ErrorMatches, tc.error, Commentf("testcase: %s", tc.name))
 		} else {
@@ -107,7 +107,7 @@ func benchmark(b *testing.B, name string) {
 
 		for i := 0; i < b.N; i++ {
 			var v interface{}
-			err := yaml.Unmarshal(t.data, &v)
+			_, err := yaml.Unmarshal(t.data, &v)
 			if len(t.error) > 0 {
 				if err == nil {
 					b.Errorf("expected error, got none")

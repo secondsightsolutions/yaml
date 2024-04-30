@@ -2580,7 +2580,7 @@ func (s *S) TestNodeRoundtrip(c *C) {
 
 		if decode {
 			var node yaml.Node
-			err := yaml.Unmarshal([]byte(testYaml), &node)
+			_, err := yaml.Unmarshal([]byte(testYaml), &node)
 			c.Assert(err, IsNil)
 			if strings.Contains(item.yaml, "#") {
 				var buf bytes.Buffer
@@ -2722,7 +2722,7 @@ func (s *S) TestSetString(c *C) {
 		c.Assert(buf.String(), Equals, item.yaml)
 
 		var doc yaml.Node
-		err = yaml.Unmarshal([]byte(item.yaml), &doc)
+		_, err = yaml.Unmarshal([]byte(item.yaml), &doc)
 		c.Assert(err, IsNil)
 
 		var str string

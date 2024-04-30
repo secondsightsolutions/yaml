@@ -85,7 +85,7 @@ type Marshaler interface {
 // See the documentation of Marshal for the format of tags and a list of
 // supported tag options.
 //
-func Unmarshal(in []byte, out interface{}) (err error) {
+func Unmarshal(in []byte, out interface{}) (n *Node, err error) {
 	return unmarshal(in, out, false)
 }
 
@@ -153,12 +153,13 @@ func (n *Node) Decode(v interface{}) (err error) {
 	return nil
 }
 
-func unmarshal(in []byte, out interface{}, strict bool) (err error) {
+func unmarshal(in []byte, out interface{}, strict bool) (n *Node, err error) {
 	defer handleErr(&err)
 	d := newDecoder()
 	p := newParser(in)
 	defer p.destroy()
 	node := p.parse()
+	n = node
 	if node != nil {
 		v := reflect.ValueOf(out)
 		if v.Kind() == reflect.Ptr && !v.IsNil() {
@@ -167,9 +168,9 @@ func unmarshal(in []byte, out interface{}, strict bool) (err error) {
 		d.unmarshal(node, v)
 	}
 	if len(d.terrors) > 0 {
-		return &TypeError{d.terrors}
+		return n, &TypeError{d.terrors}
 	}
-	return nil
+	return n, nil
 }
 
 // Marshal serializes the value provided into a YAML document. The structure
